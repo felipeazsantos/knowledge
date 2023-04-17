@@ -3,16 +3,23 @@
         <a href="" class="toggle" @click.prevent="toggleMenu" v-if="!hideToggle">
             <i class="fa fa-lg" :class="icon"></i>
         </a>
-        <h1 class="title">{{ title }}</h1>
+        <h1 class="title">
+            <router-link to="/">{{ title }}</router-link>
+        </h1>
+        <UserDropdown v-if="!hideUserDropdown" />
     </header>
 </template>
 
 <script>
+import UserDropdown from './UserDropdown.vue'
+
 export default {
     name: 'Header',
+    components: { UserDropdown },
     props: {
         title: String,
-        hideToggle: Boolean
+        hideToggle: Boolean,
+        hideDropdown: Boolean
     },
     computed: {
         icon() {
@@ -45,7 +52,7 @@ export default {
         text-align: center;
     }
 
-    .title a {
+    .title a, .title a:hover {
         color: #fff;
         text-decoration: none;
     }
@@ -63,6 +70,7 @@ export default {
     }
 
     header.header > a.toggle:hover {
+        color:#fff;
         background-color: rgba(0, 0, 0, 0.2);
     }
 </style>
