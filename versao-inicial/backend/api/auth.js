@@ -1,15 +1,15 @@
-const authSecret = require('../.env')
+const { authSecret } = require('../.env')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt-nodejs')
 
 module.exports = app => {
     const signin = async (req, res) => {
-        if (!res.body.email || !res.body.password) {
+        if (!req.body.email || !req.body.password) {
             return res.status(400).send('informe o usuário e senha')
         }
 
         const user = await app.db('users')
-            .where({ email: res.body.email })
+            .where({ email: req.body.email })
             .first()
 
         if (!user) return res.status(400).send('Usuário não encontrado!')
@@ -32,23 +32,23 @@ module.exports = app => {
             ...payload,
             token: jwt.encode(payload, authSecret)
         })
+    }
 
-        const validateToken = (req, res) => {
-            const userData = req.body || null
-            
-            try {
-                if(userData) {
-                    const token = jwt.decode(userData.token, authSecret)
-                    if (new Date(token.exp * 1000) > new Date()) {
-                        return res.send(true)
-                    }
+    const validateToken = (req, res) => {
+        const userData = req.body || null
+        
+        try {
+            if(userData) {
+                const token = jwt.decode(userData.token, authSecret)
+                if (new Date(token.exp * 1000) > new Date()) {
+                    return res.send(true)
                 }
-            } catch (e) {
-                //problema com o token
             }
-
-            res.send(false)
+        } catch (e) {
+            //problema com o token
         }
+
+        res.send(false)
     }
 
     return { signin, validateToken }
