@@ -19,7 +19,7 @@ export default {
     props: {
         title: String,
         hideToggle: Boolean,
-        hideDropdown: Boolean
+        hideUserDropdown: Boolean
     },
     computed: {
         icon() {
