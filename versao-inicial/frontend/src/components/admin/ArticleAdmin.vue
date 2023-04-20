@@ -61,6 +61,8 @@
                 </b-button>
             </template>
         </b-table>
+        <b-pagination size="md" v-model="page"
+            :total-rows="count" :per-page="limit" />
     </div>
 </template>
 
@@ -92,9 +94,8 @@ export default {
     },
     methods: {
         loadArticles() {
-            axios.get(`${baseApiUrl}/articles`)
+            axios.get(`${baseApiUrl}/articles?page=${this.page}`)
                 .then(res => {
-                    //this.articles = res.data
                     this.articles = res.data.data
                     this.count = res.data.count
                     this.limit = res.data.limit   
@@ -145,6 +146,11 @@ export default {
             this.mode = mode
             axios.get(`${baseApiUrl}/articles/${article.id}`)
                 .then(res => this.article = res.data)
+        }
+    },
+    watch: {
+        page() {
+            this.loadArticles()
         }
     },
     mounted() {
