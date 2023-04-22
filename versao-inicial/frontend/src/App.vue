@@ -1,7 +1,9 @@
 <template>
-	<div id="app" :class="{'hide-menu': !isMenuVisible}">
-		<Header title="Cod3r - Base de Conhecimento" :hideToggle="false" />
-		<Menu />
+	<div id="app" :class="{'hide-menu': !isMenuVisible || !user}">
+		<Header title="Cod3r - Base de Conhecimento" 
+			:hideToggle="!user"
+			:hideUserDropdown="!user" />
+		<Menu v-if="user" />
 		<Content />
 		<Footer />
 	</div>
@@ -17,7 +19,7 @@ import { mapState } from 'vuex'
 export default {
 	name: "App",
 	components: { Header, Menu, Content, Footer },
-	computed: mapState(['isMenuVisible'])
+	computed: mapState(['isMenuVisible', 'user'])
 }
 </script>
 
