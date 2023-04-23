@@ -39,7 +39,7 @@ export default {
         },
         getArticles() {
             const url = `${baseApiUrl}/categories/${this.category.id}/articles?page=${this.page}`
-            axios(url).then(res => {
+            axios(url).then(res => {    
                 this.articles = this.articles.concat(res.data)
                 this.page++
                 
